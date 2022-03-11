@@ -35,7 +35,7 @@ namespace API
         }
         
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public void ConfigureServices(IServiceCollection services) //ordering not important here
         {
             //connection string for our database
             //we are using the<DataContext> type which derived from DbContext we shouldnt use<DbContext>type
@@ -50,10 +50,11 @@ namespace API
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "API", Version = "v1" });
             });
+            services.AddCors();//cros origin resource sharing(cors)
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)//ordering is importan
         {
             if (env.IsDevelopment())
             {
@@ -65,6 +66,8 @@ namespace API
             app.UseHttpsRedirection();
 
             app.UseRouting();
+            //x is policy down there
+            app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().WithOrigins("https://localhost:4200"));// we have to use it after routing and before endpoints
 
             app.UseAuthorization();
 
