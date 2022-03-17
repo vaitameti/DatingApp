@@ -10,5 +10,8 @@ namespace API.Entities
         public int id { get; set; } //if we set protected it means this and child class can acces
         public string UserName { get; set; }
 
+        public byte[] PasswordHash { get; set; }//we are storing our hash and salt  in byte array
+        public byte[] PasswordSalt { get; set; }
+
     }
 }
