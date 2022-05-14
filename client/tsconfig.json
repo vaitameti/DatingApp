@@ -13,6 +13,7 @@
     "target": "es2017",
     "module": "es2020",
     "lib": [
+      "es2019", //ecmascript, we used 2019 so we could acces flat() method
       "es2018",
       "dom"
     ]

@@ -23,14 +23,11 @@ export class NavComponent implements OnInit {
   login(){
     this.accountService.login(this.model).subscribe(response =>{
       this.router.navigateByUrl('/members');
-    },error =>{
-      console.log(error);
-      this.toastr.error(error.error);
     })
   }
   logout(){
     this.accountService.logout();
-    this.router.navigateByUrl('/'); //seniding users back to home page when they will log out
+    this.router.navigateByUrl('/'); //sending users back to home page when they will log out
   }
 
 }
