@@ -20,6 +20,7 @@ namespace API.Extensions
              // we are using scoped mostly for http requests, when we ask for a request it will inizialize addscoped and once the request will be delivered it will stop
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IPhotoService, PhotoService>();
+            services.AddScoped<LogUserActivity>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
             //connection string for our database

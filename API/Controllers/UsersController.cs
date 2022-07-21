@@ -7,6 +7,7 @@ using API.Data;
 using API.DTOs;
 using API.Entities;
 using API.Extensions;
+using API.Helpers;
 using API.Interfaces;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
@@ -36,10 +37,19 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers() //we use task and sync becasue this was synchronous code which means when we query something for database user have to wait for thread to response because there can be multiple users trying to reach same endpoint 
+        public async Task<ActionResult<IEnumerable<MemberDto>>> GetUsers([FromQuery]UserParams userParams) //we use task and sync becasue this was synchronous code which means when we query something for database user have to wait for thread to response because there can be multiple users trying to reach same endpoint 
         {
+            var user = await _userRepository.GetUserByUsernameAsync(User.GetUsername());
+
+            userParams.CurrentUsername = user.UserName;
+
+            if(string.IsNullOrEmpty(userParams.Gender))
+                userParams.Gender = user.Gender == "male" ? "female" : "male";
+
            // return await _context.Users.ToListAsync(); //when a request to database goes this code waits and it returns when the task is done 
-           var users = await _userRepository.GetMembersAsync();
+           var users = await _userRepository.GetMembersAsync(userParams);
+
+           Response.AddPaginationHeader(users.CurrentPage, users.PageSize, users.TotalCount, users.TotalPages);
 
             return Ok(users); 
         }
